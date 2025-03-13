@@ -1,0 +1,31 @@
+{
+  "name": "xlsx-pdf-table-generator",
+  "version": "1.0.12",
+  "description": "Generate tables to export in excel and pdf formats",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@types/node": "^22.13.10",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^4.3.0",
+    "exceljs": "^4.4.0"
+  }
+}
