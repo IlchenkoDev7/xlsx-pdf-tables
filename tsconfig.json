@@ -4,6 +4,7 @@
         "outDir": "dist",
         "declaration": true,
         "declarationMap": true,
+        "emitDeclarationOnly": false,
         "module": "ESNext",
         "moduleResolution": "node",
         "target": "ESNext",
@@ -13,7 +14,8 @@
         ],
         "jsx": "react-jsx",
         "esModuleInterop": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
     },
     "include": [
         "src"
