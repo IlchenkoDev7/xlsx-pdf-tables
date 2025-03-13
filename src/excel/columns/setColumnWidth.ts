@@ -4,7 +4,7 @@ import { setAutoWidth } from "./setAutoWidth";
 
 const extractWidths = <T extends {}>(headers: TableSchema<T>[], columnWidths: (number | undefined)[] = []): void => {
     headers.forEach((header) => {
-        if (header.key || header.columnWidth) {
+        if (header.key || header.columnWidth.excelWidth) {
             columnWidths.push(header.columnWidth.excelWidth || undefined);
         }
         if (header.children) {
