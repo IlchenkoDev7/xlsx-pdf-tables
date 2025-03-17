@@ -20,7 +20,7 @@ export const tableStyles = StyleSheet.create({
     tableCell: {
         fontSize: 10,
         paddingVertical: 2,
-        paddingHorizontal: 1,
+        paddingHorizontal: 2,
         minHeight: 13
     },
 
@@ -30,8 +30,6 @@ export const tableStyles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 'auto',
-        marginBottom: 'auto',
         textAlign: 'center',
         paddingVertical: 2,
     },
