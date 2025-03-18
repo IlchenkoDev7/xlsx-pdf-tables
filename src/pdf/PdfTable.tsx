@@ -4,7 +4,7 @@ import { tableStyles } from './tableStyles';
 import { renderHeader } from './renderers/renderHeader';
 import { renderRows } from './renderers/renderRows';
 
-interface PdfTableProps<T extends {}> {
+export interface PdfTableProps<T extends {}> {
     tableSchema: TableSchema<T>[],
     tableData: T[],
     withNumberRows?: boolean
