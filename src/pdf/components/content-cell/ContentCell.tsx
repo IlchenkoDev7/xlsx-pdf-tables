@@ -9,9 +9,10 @@ interface ContentCellProps<T extends {}> {
     pdfPercent: number | undefined;
     dataKey: string;
     alignItems?: AlignItemsPdf;
+    withoutBorders?: boolean
 }
 
-const ContentCell = <T extends {}>({ row, dataKey, pdfPercent, alignItems }: ContentCellProps<T>) => {
+const ContentCell = <T extends {}>({ row, dataKey, pdfPercent, alignItems, withoutBorders }: ContentCellProps<T>) => {
     if (!pdfPercent) throw new Error("Не указан процент ширины столбца");
 
     const cellValue = resolveNestedValue(row, dataKey);
@@ -22,7 +23,7 @@ const ContentCell = <T extends {}>({ row, dataKey, pdfPercent, alignItems }: Con
         <View
             style={{
                 ...tableStyles.tableCell,
-                border: "1 solid black",
+                border: !withoutBorders ? "1 solid black" : undefined,
                 width: `${pdfPercent}%`,
                 alignItems: resolvedAlignItems,
             }}
