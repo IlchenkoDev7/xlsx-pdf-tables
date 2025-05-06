@@ -3,6 +3,8 @@ import { TableSchema } from "../../types/TableSchema";
 import { View } from "@react-pdf/renderer";
 import { tableStyles } from "../tableStyles";
 import ContentCell from "../components/content-cell/ContentCell";
+import { DeepKeyOf } from "../../types/DeepKeyOf";
+import { resolveNestedValue } from "../../utils/resolveNestedValue";
 
 const renderCell = <T extends {}>(
     row: T,
@@ -66,9 +68,68 @@ export const renderRow = <T extends {}>(
  * @param schemas - Схема таблицы.
  * @returns Массив элементов строк таблицы.
  */
+export const setNestedValue = <T extends object>(
+    obj: T,
+    path: string,
+    value: any
+): T => {
+    const keys = path.split(".");
+    const lastKey = keys.pop();
+    const nested = keys.reduce((acc: any, key) => {
+        if (!acc[key]) acc[key] = {};
+        return acc[key];
+    }, obj);
+
+    if (lastKey) nested[lastKey] = value;
+    return obj;
+};
+
 export const renderRows = <T extends {}>(
     data: T[],
-    schemas: TableSchema<T>[]
-): JSX.Element[] => (
-    data.map((row, rowIndex) => renderRow(row, schemas, rowIndex))
-);
+    schemas: TableSchema<T>[],
+    options?: {
+        groupBy?: DeepKeyOf<T>;
+        getGroupSummaryTitle?: (groupValue: any) => string;
+        computeGroupSummary?: (groupRows: T[]) => Partial<T>;
+    }
+): JSX.Element[] => {
+    const { groupBy, getGroupSummaryTitle, computeGroupSummary } = options || {};
+
+    if (!groupBy || !getGroupSummaryTitle || !computeGroupSummary) {
+        return data.map((row, rowIndex) => renderRow(row, schemas, rowIndex));
+    }
+
+    const groups = data.reduce((acc, row) => {
+        const groupValue = resolveNestedValue(row, groupBy);
+        const key = String(groupValue);
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(row);
+        return acc;
+    }, {} as Record<string, T[]>);
+
+    const result: JSX.Element[] = [];
+    let rowIndex = 0;
+
+    Object.entries(groups).forEach(([groupKey, groupRows]) => {
+        groupRows.forEach((row) => {
+            result.push(renderRow(row, schemas, rowIndex++));
+        });
+
+        const summaryRow = computeGroupSummary(groupRows);
+        const firstColumnKey = schemas[0].key;
+
+        let rowWithTitle = summaryRow as T;
+
+        if (firstColumnKey) {
+            rowWithTitle = setNestedValue(
+                { ...(summaryRow as T) },
+                firstColumnKey,
+                getGroupSummaryTitle(groupKey)
+            );
+        }
+
+        result.push(renderRow(rowWithTitle, schemas, rowIndex++));
+    });
+
+    return result;
+};

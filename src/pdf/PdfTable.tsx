@@ -1,24 +1,41 @@
-import { View } from '@react-pdf/renderer';
+import { Text, View } from '@react-pdf/renderer';
 import { TableSchema } from '../types/TableSchema';
 import { tableStyles } from './tableStyles';
 import { renderHeader } from './renderers/renderHeader';
 import { renderRows } from './renderers/renderRows';
+import { DeepKeyOf } from '../types/DeepKeyOf';
 
 export interface PdfTableProps<T extends {}> {
     tableSchema: TableSchema<T>[],
     tableData: T[],
-    withNumberRows?: boolean
+    withNumberRows?: boolean,
+    groupBy?: DeepKeyOf<T>,
+    getGroupSummaryTitle?: (groupValue: any) => string,
+    computeGroupSummary?: (groupRows: T[]) => T,
 }
 
 export const PdfTable = <T extends {}>({
     tableSchema,
     tableData,
-    withNumberRows = true
+    withNumberRows = true,
+    getGroupSummaryTitle,
+    groupBy,
+    computeGroupSummary
 }: PdfTableProps<T>) => {
     return (
         <View style={tableStyles.table}>
             {renderHeader(tableSchema)}
-            {withNumberRows && renderRows(tableData, tableSchema)}
+            {withNumberRows &&
+                renderRows(
+                    tableData,
+                    tableSchema,
+                    {
+                        groupBy,
+                        getGroupSummaryTitle,
+                        computeGroupSummary
+                    }
+                )
+            }
         </View>
     );
 };
