@@ -18,6 +18,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.16",
     "@types/node": "^22.13.10",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
@@ -28,6 +29,7 @@
   "dependencies": {
     "@react-pdf/renderer": "^4.3.0",
     "dayjs": "^1.11.13",
-    "exceljs": "^4.4.0"
+    "exceljs": "^4.4.0",
+    "lodash": "^4.17.21"
   }
 }

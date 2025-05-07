@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { TableSchema } from "../types/TableSchema";
 
 export const calculateColumnWidths = <T extends {}>(
@@ -5,7 +6,7 @@ export const calculateColumnWidths = <T extends {}>(
     parentWidth: number = 100
 ): TableSchema<T>[] => {
     // Создаем глубокую копию схемы
-    const copiedSchema: TableSchema<T>[] = JSON.parse(JSON.stringify(schemas));
+    const copiedSchema: TableSchema<T>[] = cloneDeep(schemas);
 
     copiedSchema.forEach(schema => {
         // Если ширина не указана, распределяем её равномерно
