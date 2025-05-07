@@ -1,3 +1,4 @@
+import { JSX } from "react";
 import { AlignItemsExcel, AlignItemsPdf } from "./AlignItems";
 import { DeepKeyOf } from "./DeepKeyOf";
 
@@ -14,4 +15,5 @@ export interface TableSchema<T> {
         excel?: AlignItemsExcel
     }
     colorKey?: keyof T;
+    pdfRender?: (value: any, row: T) => string | JSX.Element;
 }

@@ -21,6 +21,7 @@ const renderCell = <T extends {}>(
                 pdfPercent={schema.columnWidth.pdfPercent}
                 alignItems={schema.columnCellsHorizontalAlign?.pdf}
                 withoutBorders={withoutBorders}
+                pdfRender={schema.pdfRender}
             />
         );
     } else {
