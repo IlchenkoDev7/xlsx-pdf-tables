@@ -21,7 +21,11 @@ const ContentCell = <T extends {}>({ row, dataKey, pdfPercent, alignItems, witho
 
     const resolvedAlignItems = alignItems || getAlignItemsByValue(cellValue);
 
-    const content = pdfRender ? pdfRender(cellValue, row) : cellValue;
+    let content = pdfRender ? pdfRender(cellValue, row) : cellValue;
+
+    if (typeof content !== "object" || content === null) {
+        content = <Text>{String(content)}</Text>;
+    }
 
     return (
         <View
@@ -32,7 +36,7 @@ const ContentCell = <T extends {}>({ row, dataKey, pdfPercent, alignItems, witho
                 alignItems: resolvedAlignItems,
             }}
         >
-            {typeof content === "string" ? <Text>{content}</Text> : content}
+            {content}
         </View>
     );
 };
