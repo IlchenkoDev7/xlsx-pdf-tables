@@ -14,7 +14,8 @@ const HeaderItem = ({ pdfPercent, label }: HeaderItemProps) => {
             style={{
                 ...tableStyles.tableHeader,
                 width: `${pdfPercent}%`,
-                border: '1px solid black'
+                border: '1px solid black',
+                height: '100%'
             }}
         >
             <Text>{label}</Text>
