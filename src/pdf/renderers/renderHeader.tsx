@@ -45,4 +45,4 @@ const renderHeaderInternal = <T extends {}>(
 );
 
 export const renderHeader = <T extends {}>(schemas: TableSchema<T>[], height?: number): JSX.Element =>
-    renderHeaderInternal(schemas, `${height}px`);
+    renderHeaderInternal(schemas, height !== undefined ? `${height}px` : undefined);
