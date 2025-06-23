@@ -12,6 +12,7 @@ export interface PdfTableProps<T extends {}> {
     groupBy?: DeepKeyOf<T>,
     getGroupSummaryTitle?: (groupValue: any) => string,
     computeGroupSummary?: (groupRows: T[]) => T,
+    headerHeight?: number
 }
 
 export const PdfTable = <T extends {}>({
@@ -20,11 +21,12 @@ export const PdfTable = <T extends {}>({
     withNumberRows = true,
     getGroupSummaryTitle,
     groupBy,
-    computeGroupSummary
+    computeGroupSummary,
+    headerHeight
 }: PdfTableProps<T>) => {
     return (
         <View style={tableStyles.table}>
-            {renderHeader(tableSchema)}
+            {renderHeader(tableSchema, headerHeight)}
             {withNumberRows &&
                 renderRows(
                     tableData,

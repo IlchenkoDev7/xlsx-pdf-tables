@@ -44,5 +44,5 @@ const renderHeaderInternal = <T extends {}>(
     </View>
 );
 
-export const renderHeader = <T extends {}>(schemas: TableSchema<T>[]): JSX.Element =>
-    renderHeaderInternal(schemas);
+export const renderHeader = <T extends {}>(schemas: TableSchema<T>[], height?: number): JSX.Element =>
+    renderHeaderInternal(schemas, `${height}px`);
