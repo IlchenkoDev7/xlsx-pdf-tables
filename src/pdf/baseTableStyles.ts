@@ -1,20 +1,11 @@
 import { StyleSheet } from "@react-pdf/renderer";
 
-export const tableStyles = StyleSheet.create({
+export const baseTableStyles = StyleSheet.create({
     table: {
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: 'black',
         width: '100%',
-    },
-
-    tableCol: {
-        borderStyle: 'solid',
-        borderColor: 'black'
-    },
-
-    tableRow: {
-        flexDirection: 'row',
     },
 
     tableCell: {

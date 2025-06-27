@@ -1,26 +1,28 @@
 import { Text, View } from "@react-pdf/renderer"
-import { tableStyles } from "../tableStyles"
+import { baseTableStyles } from "../../../baseTableStyles"
+import { Style } from "@react-pdf/types";
 
 interface HeaderItemProps {
     pdfPercent: number | undefined,
     label: string
+    headerCellStyle?: Style
+    textStyle?: Style
 }
 
-const HeaderItem = ({ pdfPercent, label }: HeaderItemProps) => {
+export const HeaderCell = ({ pdfPercent, label, headerCellStyle, textStyle }: HeaderItemProps) => {
     if (!pdfPercent) throw new Error("Не указан процент ширины столбца")
 
     return (
         <View
             style={{
-                ...tableStyles.tableHeader,
+                ...baseTableStyles.tableHeader,
+                ...headerCellStyle,
                 width: `${pdfPercent}%`,
                 border: '1px solid black',
                 height: '100%'
             }}
         >
-            <Text>{label}</Text>
+            <Text style={textStyle}>{label}</Text>
         </View>
     )
 }
-
-export default HeaderItem
