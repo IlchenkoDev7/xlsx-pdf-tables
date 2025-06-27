@@ -1,6 +1,6 @@
 {
   "name": "xlsx-pdf-tables",
-  "version": "1.3.5",
+  "version": "2.0.0",
   "description": "Generate tables to export in excel and pdf formats",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
