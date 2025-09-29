@@ -93,7 +93,7 @@ export const TableDataRowsFromSchema = <T extends object>({
                     );
                 }
 
-                const summaryTextStyle: Style = { fontWeight: 500, ...(textStyle ?? {}) };
+                const summaryTextStyle: Style = { fontWeight: 600, ...(textStyle ?? {}) };
 
                 out.push(
                     <TableRowFromSchema
