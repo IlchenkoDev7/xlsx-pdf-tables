@@ -17,7 +17,7 @@ export const baseTableStyles = StyleSheet.create({
 
     tableHeader: {
         fontSize: 10,
-        fontWeight: 400,
+        fontWeight: 500,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

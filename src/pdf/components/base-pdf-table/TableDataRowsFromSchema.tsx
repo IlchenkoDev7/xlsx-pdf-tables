@@ -93,12 +93,14 @@ export const TableDataRowsFromSchema = <T extends object>({
                     );
                 }
 
+                const summaryTextStyle: Style = { fontWeight: 500, ...(textStyle ?? {}) };
+
                 out.push(
                     <TableRowFromSchema
                         key={nextPath.join("::") + "::summary"}
                         row={summaryRow}
                         schemas={schemas}
-                        textStyles={textStyle}
+                        textStyles={summaryTextStyle}
                         cellsStyles={cellsStyle}
                     />
                 );
