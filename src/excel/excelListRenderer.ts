@@ -27,7 +27,7 @@ export const excelListRenderer = <T extends {}>(
     const startRowForHeaders = tableTitles.length + 1;
 
     // Создаем шапку любого уровня вложенности
-    createNestedHeaders<T>(worksheet, tableSchema, startRowForHeaders, 1, { borderedContent: borderedContent ?? true });
+    createNestedHeaders<T>(worksheet, tableSchema, startRowForHeaders, 1);
 
     // Преобразуем внешние данные на основе данных и шапки
     const data = convertDataToArray<T>(tableData, tableSchema);
