@@ -3,7 +3,17 @@ import { FlattenedRow } from "../data/flattenData";
 import { drawBorderForGroup } from "./drawBorderForGroup";
 import { setColor } from "./setColor";
 
-export const generateDataRows = (data: FlattenedRow[], worksheet: Worksheet): void => {
+type GenerateRowsOptions = {
+    borderedContent?: boolean;
+};
+
+export const generateDataRows = (
+    data: FlattenedRow[],
+    worksheet: Worksheet,
+    opts: GenerateRowsOptions = {}
+): void => {
+    const borderedContent = opts.borderedContent ?? true;
+
     const groupStartRows: Map<string, number> = new Map();
     const topLevelRanges: Map<string, { startRow: number; endRow: number }> = new Map();
 
@@ -77,7 +87,9 @@ export const generateDataRows = (data: FlattenedRow[], worksheet: Worksheet): vo
         });
     });
 
-    topLevelRanges.forEach(({ startRow, endRow }) => {
-        drawBorderForGroup(worksheet, startRow, endRow, 1, data[0].data.length, "medium");
-    });
+    if (borderedContent && data.length > 0) {
+        topLevelRanges.forEach(({ startRow, endRow }) => {
+            drawBorderForGroup(worksheet, startRow, endRow, 1, data[0].data.length, "medium");
+        });
+    }
 };
