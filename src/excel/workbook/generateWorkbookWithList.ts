@@ -3,7 +3,7 @@ import { excelListRenderer } from "../excelListRenderer";
 import { TableSchema } from "../../types/TableSchema";
 import { TableTitle } from "../types/TableTitle";
 
-export const downloadWorkbookWithList = async <T extends {}>(headers: TableSchema<T>[], tableTitle: TableTitle[], fileName: string, data: T[]) => {
+export const downloadWorkbookWithList = async <T extends {}>(headers: TableSchema<T>[], tableTitle: TableTitle[], fileName: string, data: T[], borderedContent?: boolean) => {
     const workbook = new Workbook();
 
     excelListRenderer<T>(
@@ -11,7 +11,8 @@ export const downloadWorkbookWithList = async <T extends {}>(headers: TableSchem
         fileName,
         tableTitle,
         headers,
-        data
+        data,
+        borderedContent
     )
 
     const buffer = await workbook.xlsx.writeBuffer();

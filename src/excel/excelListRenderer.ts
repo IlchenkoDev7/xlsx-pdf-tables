@@ -15,6 +15,7 @@ export const excelListRenderer = <T extends {}>(
     tableTitles: TableTitle[],
     tableSchema: TableSchema<T>[],
     tableData: T[],
+    borderedContent?: boolean,
 ): void => {
     // Создаём в книге новый лист, передавая ему название
     const worksheet = workbook.addWorksheet(listName);
@@ -31,11 +32,8 @@ export const excelListRenderer = <T extends {}>(
     // Преобразуем внешние данные на основе данных и шапки
     const data = convertDataToArray<T>(tableData, tableSchema);
 
-    const borderedContent =
-        tableSchema.find(col => typeof col.borderedContent.xlsx === "boolean")?.borderedContent.xlsx ?? true;
-
     // Генерируем строки на основе внешних данных
-    generateDataRows(data, worksheet, { borderedContent });
+    generateDataRows(data, worksheet, { borderedContent: borderedContent ?? true });
 
     // Выравниваем ширину каждой колонки на основе длины всех данных колонки
     setColumnWidth(worksheet, tableSchema, startRowForHeaders);

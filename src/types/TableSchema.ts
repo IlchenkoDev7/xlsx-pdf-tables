@@ -16,5 +16,4 @@ export interface TableSchema<T> {
     }
     colorKey?: keyof T;
     pdfRender?: (value: any, row: T) => string | JSX.Element;
-    borderedContent?: { xlsx: boolean };
 }
