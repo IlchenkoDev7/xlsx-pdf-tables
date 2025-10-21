@@ -8,15 +8,50 @@ export const generateDataRows = (data: FlattenedRow[], worksheet: Worksheet): vo
     const topLevelRanges: Map<string, { startRow: number; endRow: number }> = new Map();
 
     data.forEach((rowData, rowIndex) => {
-        const { data: rowValues, mergeKeys, colors } = rowData;
+        const { data: rowValues, mergeKeys, colors, hMerge, hMergeEx, rowBold } = rowData;
 
         const excelRow = worksheet.addRow(rowValues);
+        setColor(colors, excelRow);
 
-        setColor(colors, excelRow)
+        if (rowBold) {
+            excelRow.eachCell((cell) => {
+                cell.font = { ...(cell.font ?? {}), bold: true };
+            });
+        }
 
-        mergeKeys.forEach((_: any, colIndex: number) => {
+        if (Array.isArray(hMerge)) {
+            for (const [fromCol, toCol] of hMerge) {
+                if (typeof fromCol === "number" && typeof toCol === "number" && toCol > fromCol) {
+                    worksheet.mergeCells(excelRow.number, fromCol, excelRow.number, toCol);
+                }
+            }
+        }
+
+        if (Array.isArray(hMergeEx)) {
+            for (const m of hMergeEx) {
+                const { from, to, align, bold } = m || {};
+                if (
+                    typeof from === 'number' &&
+                    typeof to === 'number' &&
+                    to > from
+                ) {
+                    worksheet.mergeCells(excelRow.number, from, excelRow.number, to);
+                    const master = worksheet.getCell(excelRow.number, from);
+
+                    if (align) {
+                        const prev = master.alignment ?? {};
+                        master.alignment = { ...prev, ...align };
+                    }
+
+                    if (bold) {
+                        master.font = { ...(master.font ?? {}), bold: true };
+                    }
+                }
+            }
+        }
+
+        mergeKeys.forEach((_, colIndex: number) => {
             const groupKey = mergeKeys.slice(0, colIndex + 1).join("-");
-
             if (!groupStartRows.has(groupKey)) {
                 groupStartRows.set(groupKey, excelRow.number);
             }
@@ -28,7 +63,6 @@ export const generateDataRows = (data: FlattenedRow[], worksheet: Worksheet): vo
                 const startRow = groupStartRows.get(groupKey)!;
                 const endRow = excelRow.number;
 
-                // Сохраняем диапазоны для верхнего уровня
                 if (colIndex === 0) {
                     topLevelRanges.set(groupKey, { startRow, endRow });
                 }
@@ -37,9 +71,7 @@ export const generateDataRows = (data: FlattenedRow[], worksheet: Worksheet): vo
                     worksheet.mergeCells(startRow, colIndex + 1, endRow, colIndex + 1);
                 }
 
-                // Добавление рамки для текущей группы
                 drawBorderForGroup(worksheet, startRow, endRow, colIndex + 1, rowValues.length, 'thin');
-
                 groupStartRows.delete(groupKey);
             }
         });

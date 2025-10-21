@@ -1,10 +1,21 @@
+import { Alignment } from "exceljs";
 import { TableSchema } from "../../types/TableSchema";
 import { extractParamsFromSchema } from "./extractParamsFromSchema";
 
+export interface MergeEx {
+    from: number;
+    to: number;
+    align?: Pick<Alignment, 'horizontal' | 'vertical' | 'wrapText'>;
+    bold?: boolean;
+}
+
 export interface FlattenedRow {
-    data: any[];       // Массив значений строки
-    mergeKeys: string[]; // Ключи для объединения строк
-    colors: string[];  // Цвета ячеек строки
+    data: unknown[];
+    mergeKeys: string[];
+    colors: (string | null)[];
+    hMerge?: Array<[number, number]>;
+    hMergeEx?: MergeEx[];
+    rowBold?: boolean;
 }
 
 /**
@@ -15,49 +26,54 @@ export interface FlattenedRow {
  * @param parentMergeKeys - Ключи объединения для родителя
  * @returns Плоский массив строк
  */
+// flattenData.ts (логика)
 export function flattenData<T extends {}>(
     input: any[],
     tableSchema: TableSchema<T>[],
     parentMergeKeys: string[] = []
 ): FlattenedRow[] {
     const result: FlattenedRow[] = [];
-
-    const keys = extractParamsFromSchema(tableSchema, 'key')
-    const colorKeys = extractParamsFromSchema(tableSchema, 'colorKey')
+    const keys = extractParamsFromSchema(tableSchema, 'key');
+    const colorKeys = extractParamsFromSchema(tableSchema, 'colorKey');
 
     if (!Array.isArray(input)) return [];
 
     input.forEach((item, index) => {
         const { children, ...rest } = item;
 
-        // Формируем значения строки
+        const selfHMerge: Array<[number, number]> | undefined =
+            Array.isArray(item.__hMerge) ? item.__hMerge :
+                (Array.isArray(item.hMerge) ? item.hMerge : undefined);
+
+        const selfHMergeEx = Array.isArray(item.__hMergeEx) ? item.__hMergeEx :
+            (Array.isArray(item.hMergeEx) ? item.hMergeEx : undefined);
+
+        const rowBold = Boolean(item.__bold || item.bold || item.__isSummary);
+
         const rowData = keys.map((key) => (key in rest ? rest[key] : null));
-
-        // Формируем цвета строки
-        const rowColors = colorKeys.map((colorKey) => (colorKey in rest ? rest[colorKey] : null))
-
-        // Создаём ключи для объединения
+        const rowColors = colorKeys.map((ck) => (ck in rest ? rest[ck] : null));
         const mergeKeys = [...parentMergeKeys, `${index}`];
 
         if (children && children.length > 0) {
-            // Обработка детей
             const childRows = flattenData(children, tableSchema, mergeKeys);
-
-            // Добавляем данные родителя в первые строки детей
             childRows.forEach((child, childIndex) => {
                 if (childIndex === 0) {
-                    child.data = rowData.map((value, idx) => (value !== null ? value : child.data[idx]));
-                    child.colors = rowColors.map((color, idx) => color || child.colors[idx]);
+                    child.data = rowData.map((v, i) => (v !== null ? v : child.data[i]));
+                    child.colors = rowColors.map((c, i) => c || child.colors[i]);
+                    if (selfHMerge && selfHMerge.length && !child.hMerge) child.hMerge = selfHMerge;
+                    if (selfHMergeEx && selfHMergeEx.length && !child.hMergeEx) child.hMergeEx = selfHMergeEx;
+                    if (rowBold && child.rowBold !== true) child.rowBold = true;
                 }
             });
-
             result.push(...childRows);
         } else {
-            // Если детей нет, добавляем строку
             result.push({
                 data: rowData,
                 mergeKeys,
                 colors: rowColors,
+                hMerge: selfHMerge,
+                hMergeEx: selfHMergeEx,
+                rowBold,
             });
         }
     });
