@@ -3,7 +3,19 @@ import { excelListRenderer } from "../excelListRenderer";
 import { TableSchema } from "../../types/TableSchema";
 import { TableTitle } from "../types/TableTitle";
 
-export const downloadWorkbookWithList = async <T extends {}>(headers: TableSchema<T>[], tableTitle: TableTitle[], fileName: string, data: T[], borderedContent?: boolean) => {
+type ExcelFontOptions = {
+    headerFontSize?: number;
+    contentFontSize?: number;
+};
+
+export const downloadWorkbookWithList = async <T extends {}>(
+    headers: TableSchema<T>[],
+    tableTitle: TableTitle[],
+    fileName: string,
+    data: T[],
+    borderedContent?: boolean,
+    opts?: ExcelFontOptions
+) => {
     const workbook = new Workbook();
 
     excelListRenderer<T>(
@@ -12,8 +24,9 @@ export const downloadWorkbookWithList = async <T extends {}>(headers: TableSchem
         tableTitle,
         headers,
         data,
-        borderedContent
-    )
+        borderedContent,
+        opts
+    );
 
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -25,4 +38,4 @@ export const downloadWorkbookWithList = async <T extends {}>(headers: TableSchem
     link.click();
 
     URL.revokeObjectURL(url);
-}
+};

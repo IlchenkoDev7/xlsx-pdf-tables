@@ -5,6 +5,7 @@ import { setColor } from "./setColor";
 
 type GenerateRowsOptions = {
     borderedContent?: boolean;
+    contentFontSize?: number;
 };
 
 export const generateDataRows = (
@@ -23,6 +24,12 @@ export const generateDataRows = (
         const excelRow = worksheet.addRow(rowValues);
         setColor(colors, excelRow);
 
+        if (opts.contentFontSize) {
+            excelRow.eachCell((cell) => {
+                cell.font = { ...(cell.font ?? {}), size: opts.contentFontSize };
+            });
+        }
+
         if (rowBold) {
             excelRow.eachCell((cell) => {
                 cell.font = { ...(cell.font ?? {}), bold: true };
@@ -40,11 +47,7 @@ export const generateDataRows = (
         if (Array.isArray(hMergeEx)) {
             for (const m of hMergeEx) {
                 const { from, to, align, bold } = m || {};
-                if (
-                    typeof from === 'number' &&
-                    typeof to === 'number' &&
-                    to > from
-                ) {
+                if (typeof from === 'number' && typeof to === 'number' && to > from) {
                     worksheet.mergeCells(excelRow.number, from, excelRow.number, to);
                     const master = worksheet.getCell(excelRow.number, from);
 
@@ -52,7 +55,6 @@ export const generateDataRows = (
                         const prev = master.alignment ?? {};
                         master.alignment = { ...prev, ...align };
                     }
-
                     if (bold) {
                         master.font = { ...(master.font ?? {}), bold: true };
                     }
@@ -62,9 +64,7 @@ export const generateDataRows = (
 
         mergeKeys.forEach((_, colIndex: number) => {
             const groupKey = mergeKeys.slice(0, colIndex + 1).join("-");
-            if (!groupStartRows.has(groupKey)) {
-                groupStartRows.set(groupKey, excelRow.number);
-            }
+            if (!groupStartRows.has(groupKey)) groupStartRows.set(groupKey, excelRow.number);
 
             const isLastRow = rowIndex === data.length - 1;
             const nextMergeKey = isLastRow ? null : data[rowIndex + 1]?.mergeKeys[colIndex];

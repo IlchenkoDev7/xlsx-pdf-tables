@@ -1,12 +1,17 @@
 import { Borders, Worksheet } from "exceljs";
 import { TableSchema } from "../../types/TableSchema";
 
-// Создание шапки таблицы
+type ExcelFontOptions = {
+    headerFontSize?: number;
+    contentFontSize?: number;
+};
+
 export const createNestedHeaders = <T extends {}>(
-    worksheet: Worksheet, 
-    headers: TableSchema<T>[], 
-    startRow: number, 
-    startCol: number
+    worksheet: Worksheet,
+    headers: TableSchema<T>[],
+    startRow: number,
+    startCol: number,
+    opts?: ExcelFontOptions
 ): void => {
     let currentRow = startRow;
     let currentCol = startCol;
@@ -16,13 +21,15 @@ export const createNestedHeaders = <T extends {}>(
 
         const cell = worksheet.getCell(currentRow, currentCol);
         cell.value = label;
-        cell.font = { bold: true };
+        cell.font = {
+            bold: true,
+            ...(opts?.headerFontSize ? { size: opts.headerFontSize } : {}),
+        };
         cell.alignment = { vertical: 'middle', horizontal: 'center' };
 
         if (colspan > 1) {
             worksheet.mergeCells(currentRow, currentCol, currentRow, currentCol + colspan - 1);
         }
-
         if (rowspan > 1) {
             worksheet.mergeCells(currentRow, currentCol, currentRow + rowspan - 1, currentCol);
         }
@@ -36,7 +43,7 @@ export const createNestedHeaders = <T extends {}>(
         cell.border = border;
 
         if (children && children.length > 0) {
-            createNestedHeaders(worksheet, children, currentRow + 1, currentCol);
+            createNestedHeaders(worksheet, children, currentRow + 1, currentCol, opts);
         }
 
         currentCol += colspan;
