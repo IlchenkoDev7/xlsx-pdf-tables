@@ -1,5 +1,5 @@
 import { Worksheet } from "exceljs";
-import { FlattenedRow } from "../data/flattenData";
+import { FlattenedRow } from "../../utils/flattenData";
 import { drawBorderForGroup } from "./drawBorderForGroup";
 import { setColor } from "./setColor";
 
@@ -53,7 +53,7 @@ export const generateDataRows = (
 
                     if (align) {
                         const prev = master.alignment ?? {};
-                        master.alignment = { ...prev, ...align };
+                        master.alignment = { ...prev, ...{ align } };
                     }
                     if (bold) {
                         master.font = { ...(master.font ?? {}), bold: true };

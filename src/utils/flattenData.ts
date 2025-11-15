@@ -1,11 +1,11 @@
 import { Alignment } from "exceljs";
-import { TableSchema } from "../../types/TableSchema";
+import { TableSchema } from "../types/TableSchema";
 import { extractParamsFromSchema } from "./extractParamsFromSchema";
 
 export interface MergeEx {
     from: number;
     to: number;
-    align?: Pick<Alignment, 'horizontal' | 'vertical' | 'wrapText'>;
+    align?: 'horizontal' | 'vertical' | 'wrapText';
     bold?: boolean;
 }
 

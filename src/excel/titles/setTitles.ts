@@ -1,5 +1,5 @@
 import { Worksheet } from "exceljs";
-import { TableTitle } from "../types/TableTitle";
+import { TableTitle } from "../../types/TableTitle";
 import { getColumnCount } from "../columns/getColumnCount";
 import { TableSchema } from "../../types/TableSchema";
 

@@ -1,6 +1,5 @@
-import { TableSchema } from "../../types/TableSchema";
+import { TableSchema } from "../types/TableSchema";
 
-// Функция для извлечения ключей из заголовков
 export const extractParamsFromSchema = <T extends {}>(schema: TableSchema<T>[], schemaKey: keyof TableSchema<T>): any[] => {
     const paramValues: any[] = [];
 

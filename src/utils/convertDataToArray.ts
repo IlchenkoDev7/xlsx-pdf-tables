@@ -1,4 +1,4 @@
-import { TableSchema } from "../../types/TableSchema";
+import { TableSchema } from "../types/TableSchema";
 import { extractParamsFromSchema } from "./extractParamsFromSchema";
 import { flattenData, FlattenedRow } from "./flattenData";
 

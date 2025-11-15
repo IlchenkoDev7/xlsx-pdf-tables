@@ -1,6 +1,6 @@
 import type { Alignment, Worksheet } from "exceljs";
 import { TableSchema } from "../../types/TableSchema";
-import { extractParamsFromSchema } from "../data/extractParamsFromSchema";
+import { extractParamsFromSchema } from "../../utils/extractParamsFromSchema";
 import { isRowNotTitle } from "../rows/isRowNotTitle";
 
 function getSchemaHorizontalAlign(v: unknown): Alignment['horizontal'] | undefined {

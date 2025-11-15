@@ -1,7 +1,7 @@
 {
-  "name": "xlsx-pdf-tables",
+  "name": "xlsx-word-pdf-tables",
   "version": "2.2.6",
-  "description": "Generate tables to export in excel and pdf formats",
+  "description": "Generate tables to export in excel, word and pdf formats",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -29,6 +29,7 @@
   "dependencies": {
     "@react-pdf/renderer": "^4.3.0",
     "dayjs": "^1.11.13",
+    "docx": "^9.5.1",
     "exceljs": "^4.4.0",
     "lodash": "^4.17.21"
   }

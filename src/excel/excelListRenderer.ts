@@ -1,9 +1,9 @@
 import { Workbook } from "exceljs";
-import { convertDataToArray } from "./data/convertDataToArray";
+import { convertDataToArray } from "../utils/convertDataToArray";
 import { createNestedHeaders } from "./header/createNestedHeader";
 import { generateDataRows } from "./rows/generateDataRows";
 import { setColumnWidth } from "./columns/setColumnWidth";
-import { TableTitle } from "./types/TableTitle";
+import { TableTitle } from "../types/TableTitle";
 import { setColumnAlignment } from "./columns/setColumnAlignment";
 import { TableSchema } from "../types/TableSchema";
 import { setTitles } from "./titles/setTitles";

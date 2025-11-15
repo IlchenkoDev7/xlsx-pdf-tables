@@ -1,7 +1,7 @@
 import { Workbook } from "exceljs";
 import { excelListRenderer } from "../excelListRenderer";
 import { TableSchema } from "../../types/TableSchema";
-import { TableTitle } from "../types/TableTitle";
+import { TableTitle } from "../../types/TableTitle";
 
 type ExcelFontOptions = {
     headerFontSize?: number;
