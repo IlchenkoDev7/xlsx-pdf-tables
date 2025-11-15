@@ -1,7 +1,7 @@
 {
-  "name": "xlsx-word-pdf-tables",
-  "version": "3.0.0",
-  "description": "Generate tables to export in excel, word and pdf formats",
+  "name": "xlsx-pdf-tables",
+  "version": "2.2.6",
+  "description": "Generate tables to export in excel and pdf formats",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
